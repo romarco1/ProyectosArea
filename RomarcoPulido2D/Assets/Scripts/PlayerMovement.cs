@@ -6,19 +6,23 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 15;
     public Vector2 limits = new Vector2 (5, 3.5f);
+    Vector2 ShapeLimits { get { return limits - ((colliderSize * transform.localScale) / 2); } }
+    Vector2 colliderSize;
+
     // Start is called before the first frame update
     void Start(){
+        Vector2 colliderSize = gameObject.GetComponent<BoxCollider2D> ().size;
 
-        
+
     }
 
     // Update is called once per frame
     void Update(){
         
         //Get current Horizontal Movement
-        float horDirection = Input.GetAxisRaw ("Horizontal");
-;        Vector3 horMove = horDirection * Vector3.right;
-        
+;        Vector3 horMove = Input.GetAxisRaw ("Horizontal") * Vector3.right;
+    
+
         /*if (transform.position.x > -limits.x || transform.position.x < limits.x) {
             horMove *= 0;
             int limit = (int)transform.position.x;
@@ -27,13 +31,12 @@ public class PlayerMovement : MonoBehaviour
             transform.position = temp;
         }*/
         //Get current Vertical Movement
-        float verDirection = Input.GetAxisRaw ("Vertical");
-        Vector3 verMove = verDirection * Vector3.up;
+        Vector3 verMove = Input.GetAxisRaw ("Vertical") * Vector3.up;
 
         Vector3 temp = transform.position;
         transform.Translate ((horMove + verMove).normalized * moveSpeed * Time.deltaTime);
-        temp.x = Mathf.Clamp (transform.position.x, -limits.x, limits.x);
-        temp.y = Mathf.Clamp (transform.position.y, -limits.x, limits.y);
+        temp.x = Mathf.Clamp (transform.position.x, -ShapeLimits.x, ShapeLimits.x);
+        temp.y = Mathf.Clamp (transform.position.y, -ShapeLimits.x, ShapeLimits.y);
         transform.position = temp;
 
         /*if ((transform.position.x < -limits.x || transform.position.x > limits.x) ||
@@ -51,7 +54,9 @@ public class PlayerMovement : MonoBehaviour
     void OnDrawGizmos (){
         Gizmos.DrawSphere (transform.position, 0.15f);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube (Vector3.zero, limits);
+        Gizmos.DrawWireCube (Vector3.zero, limits * 2);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireCube (Vector3.zero, ShapeLimits * 2);
 
     }
 }
