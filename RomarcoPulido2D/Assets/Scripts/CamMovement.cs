@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CamMovement : MonoBehaviour{
+public class CamMovement : MonoBehaviour {
 
     public Transform followTarget;
     public float followSpeed;
-    Vector2 camUnitDimensions;
-    Vector2 limits;
+    Vector2 camUnitDimentions;
+    public PlayerPhysicsMov playerMovement;
+    Vector2 limits { get { return playerMovement.limits - camUnitDimentions; } }
 
     // Start is called before the first frame update
-    void Start(){
-        camUnitDimensions = new Vector2 (Camera.main.orthographicSize * 16 / 9, Camera.main.orthographicSize);
-        limits = new Vector2 (10.0f, 7.0f) - camUnitDimensions;
-        GameObject foundObject = GameObject.Find ("Square");
-        Debug.Log (foundObject.name);
+    void Start ()
+    {
+        camUnitDimentions = new Vector2 (Camera.main.orthographicSize * 16 / 9, Camera.main.orthographicSize);
     }
 
     // Update is called once per frame
-    void Update(){
+    void LateUpdate ()
+    {
         if (followTarget) {
             /*Vector3 temp = Vector3.MoveTowards (transform.position, followTarget.position, followSpeed * Time.deltaTime);
             temp.z = transform.position.z;
@@ -30,6 +30,6 @@ public class CamMovement : MonoBehaviour{
             temp.x = Mathf.Clamp (transform.position.x, -limits.x, limits.x);
             temp.y = Mathf.Clamp (transform.position.y, -limits.y, limits.y);
             transform.position = temp;
-        } 
+        }
     }
 }

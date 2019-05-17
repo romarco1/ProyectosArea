@@ -574,3 +574,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followTarget: {fileID: 1302403802}
   followSpeed: 60
+  playerMovement: {fileID: 0}
